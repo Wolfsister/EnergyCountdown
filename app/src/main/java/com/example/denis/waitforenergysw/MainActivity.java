@@ -63,7 +63,18 @@ public class MainActivity extends AppCompatActivity {
             minute = "0" + minute;
         }
 
-        String resultatCalcul = "Il vous faut patienter encore " + tpsRestant + " minutes... Il sera " + heure + "h"+ minute;
+        String heureRestante= String.valueOf(tpsRestant/60);
+        if(heureRestante.length()==1){
+            heureRestante = "0" + heureRestante;
+        }
+
+        String minuteRestante= String.valueOf(tpsRestant%60);
+        if(minuteRestante.length()==1){
+            minuteRestante = "0" + minuteRestante;
+        }
+
+
+        String resultatCalcul = "Il vous faut patienter encore " + tpsRestant + " minutes (" + heureRestante + "h" + minuteRestante + ")... Il sera " + heure + "h"+ minute;
 
         if(tpsRestant == 0) {
             resultatCalcul = "Vous pouvez jouer !!";
