@@ -1,6 +1,7 @@
 package com.example.denis.waitforenergysw;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +13,13 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+
 public class MainActivity extends AppCompatActivity {
 
-    public static int DEFAULT_VALUE_NUMBERPICKER= 71 ;
+    //public static int DEFAULT_VALUE_NUMBERPICKER= 71 ;
+
+
+    public static final String PREFS_NAME = "MySharedPrefsFile" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +27,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         NumberPicker nbP = (NumberPicker) findViewById(R.id.nombreEnergieTotalePicker);
         nbP.setMinValue(40);
-        nbP.setMaxValue(100);
-        nbP.setValue(DEFAULT_VALUE_NUMBERPICKER);
+        nbP.setMaxValue(80);
+        //nbP.setValue(DEFAULT_VALUE_NUMBERPICKER);
+        nbP.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                sauvegarderEnergieMax(newVal);
+            }
+        });
+        nbP.setValue(chargerEnergieMax());
         nbP.setWrapSelectorWheel(false);
     }
 
@@ -84,5 +96,22 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textViewResultat= (TextView) findViewById(R.id.resultatEnergie);
         textViewResultat.setText(resultatCalcul);
+    }
+
+
+    //sauvegarde la valeur max rentrée par l'utilisateur pour la prochaine fois
+    public void sauvegarderEnergieMax(int energieMax){
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("energieMax", energieMax);
+
+        editor.commit();
+    }
+
+
+    //charge la valeur max préalablement rentrée par l'utilisateur
+    public int chargerEnergieMax(){
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return sharedPref.getInt("energieMax", 75);
     }
 }
