@@ -47,13 +47,16 @@ public class MainActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(viewForKeyboard.getWindowToken(), 0 );
         }
+        TextView textViewResultat= (TextView) findViewById(R.id.resultatEnergie);
 
         EditText editTextNbEnergieActuelle= (EditText) findViewById(R.id.energieRestante);
         int nbEnergieActuelle = 0 ;
         if(!editTextNbEnergieActuelle.getText().toString().equals("")) {
             nbEnergieActuelle = Integer.parseInt(editTextNbEnergieActuelle.getText().toString());
         } else {
+            textViewResultat.setText("");
             Toast.makeText(MainActivity.this, "Vous n'avez pas rentré de valeur. N'avez-vous pas d'énergie ?", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         NumberPicker numberPickerMaxEnergie= (NumberPicker) findViewById(R.id.nombreEnergieTotalePicker);
@@ -94,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             resultatCalcul = "Vérifiez votre saisie d'énergie actuelle.";
         }
 
-        TextView textViewResultat= (TextView) findViewById(R.id.resultatEnergie);
         textViewResultat.setText(resultatCalcul);
     }
 
